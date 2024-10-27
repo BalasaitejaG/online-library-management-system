@@ -70,10 +70,11 @@ h2 {
 #cartItemRemove{
 
     background-color: transparent;
-    color: red;
+    color: rgba(250, 76, 76, 0.938);
+    font-size: 1.35vw;
     border: none;
-    margin:10px;
-    padding: 5px 10px;
+  margin-left:2vw;
+    padding: 10px;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
@@ -88,16 +89,6 @@ h2 {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
-}
-
-#remove-btn{
-    background-color:red;
-    border: none;
-    padding: 10px;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
 }
 
 #checkout-btn:hover {
