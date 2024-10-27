@@ -61,17 +61,43 @@ h2 {
 }
 
 #cart-total {
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
   text-align: right;
+}
+
+#cartItemRemove{
+
+    background-color: transparent;
+    color: red;
+    border: none;
+    margin:10px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 #checkout-btn {
   background-color: #6200ea;
   border: none;
   padding: 10px;
+  margin: 10px;
   color: white;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
+}
+
+#remove-btn{
+    background-color:red;
+    border: none;
+    padding: 10px;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 #checkout-btn:hover {

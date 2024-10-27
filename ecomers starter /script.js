@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const cartTotalMessage = document.getElementById("cart-total");
   const totalPriceDisplay = document.getElementById("total-price");
   const checkOutBtn = document.getElementById("checkout-btn");
+  const removeBtn = document.getElementById("remove-btn");
 
   products.forEach((product) => {
     const productDiv = document.createElement("div");
@@ -37,6 +38,11 @@ document.addEventListener("DOMContentLoaded", () => {
     renderCart();
   }
 
+  function removeFromCart(product) {
+    cart.pop(product);
+    renderCart();
+  }
+
   function renderCart() {
     cartItems.innerText = "";
     let totalPrice = 0;
@@ -44,12 +50,20 @@ document.addEventListener("DOMContentLoaded", () => {
     if (cart.length > 0) {
       emptyCartMessage.classList.add("hidden");
       cartTotalMessage.classList.remove("hidden");
-      cart.forEach((item, index) => {
+      cart.forEach((item, index) =>{ 
         totalPrice += item.price;
         const cartItem = document.createElement("div");
         cartItem.innerHTML = `
         ${item.name} - $${item.price.toFixed(2)}
+        <button id="cartItemRemove">remove</button>
         `;
+
+        cartItem.addEventListener("click", (e) => {
+          if (e.target.tagName === "BUTTON") {
+            removeFromCart();
+          }
+        });
+
         cartItems.appendChild(cartItem);
         totalPriceDisplay.textContent = `${totalPrice.toFixed(2)}`;
       });
@@ -60,6 +74,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   checkOutBtn.addEventListener("click", () => {
+    cart.length = 0;
+    alert("Checkout successfully");
+    renderCart();
+  });
+
+  removeBtn.addEventListener("click", () => {
     cart.length = 0;
     alert("Checkout successfully");
     renderCart();
