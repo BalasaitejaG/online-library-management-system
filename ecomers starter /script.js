@@ -5,8 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     { id: 3, name: "bread", price: 59.999 },
   ];
 
-  const cart = [];
-
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
   const productList = document.getElementById("product-list");
   const cartItems = document.getElementById("cart-items");
   const emptyCartMessage = document.getElementById("empty-cart");
@@ -14,6 +13,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const totalPriceDisplay = document.getElementById("total-price");
   const checkOutBtn = document.getElementById("checkout-btn");
   const removeBtn = document.getElementById("remove-btn");
+
+  cart.forEach((cartItems) => renderCart(cartItems));
 
   products.forEach((product) => {
     const productDiv = document.createElement("div");
@@ -46,17 +47,18 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderCart() {
     cartItems.innerText = "";
     let totalPrice = 0;
-
     if (cart.length > 0) {
       emptyCartMessage.classList.add("hidden");
       cartTotalMessage.classList.remove("hidden");
-      cart.forEach((item, index) =>{ 
+
+      cart.forEach((item, index) => {
         totalPrice += item.price;
         const cartItem = document.createElement("div");
+
         cartItem.innerHTML = `
-        ${item.name} - $${item.price.toFixed(2)}
-        <button id="cartItemRemove">remove</button>
-        `;
+      ${item.name} - $${item.price.toFixed(2)}
+      <button id="cartItemRemove">remove</button>
+      `;
 
         cartItem.addEventListener("click", (e) => {
           if (e.target.tagName === "BUTTON") {
@@ -66,6 +68,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         cartItems.appendChild(cartItem);
         totalPriceDisplay.textContent = `${totalPrice.toFixed(2)}`;
+
+        saveCartToLocalStorage();
       });
     } else {
       emptyCartMessage.classList.remove("hidden");
@@ -73,15 +77,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  function saveCartToLocalStorage() {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }
+
   checkOutBtn.addEventListener("click", () => {
     cart.length = 0;
     alert("Checkout successfully");
     renderCart();
-  });
-
-  removeBtn.addEventListener("click", () => {
-    cart.length = 0;
-    alert("Checkout successfully");
-    renderCart();
+    localStorage.removeItem("cart");
   });
 });
