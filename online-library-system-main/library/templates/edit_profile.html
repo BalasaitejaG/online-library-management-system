@@ -1,0 +1,71 @@
+{% extends 'student_navbar.html' %}
+
+{% block title %} Edit Profile {% endblock %}
+
+{% block css %}
+{% endblock %}
+{% block body %}
+<div class="container">
+    {% if messages %}
+    <div class="messages mt-4">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}" role="alert">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data"> 
+        {% csrf_token %}
+        <div class="row mt-4">
+            <div class="form-group col-md-6">
+                <label><i style="font-weight: bold;">Email</i></label>
+                <input type="email" class="form-control mt-2" name="email" value="{% if not new_profile %}{{user.email}}{% endif %}" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label><i style="font-weight: bold;">Mobile Number</i></label>
+                <input type="number" class="form-control mt-2" name="phone" value="{% if not new_profile %}{{user.student.phone}}{% endif %}" required>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="form-group col-md-6">
+                <label><i style="font-weight: bold;">Branch Name</i></label>
+                <input type="text" class="form-control mt-2" name="branch" value="{% if not new_profile %}{{user.student.branch}}{% endif %}" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label><i style="font-weight: bold;">Class Name</i></label>
+                <input type="text" class="form-control mt-2" name="classroom" value="{% if not new_profile %}{{user.student.classroom}}{% endif %}" required>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="form-group col-md-6">
+                <label><i style="font-weight: bold;">Roll Number</i></label>
+                <input type="text" class="form-control mt-2" name="roll_no" value="{% if not new_profile %}{{user.student.roll_no}}{% endif %}" required>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="form-group col-md-6">
+                <label><i style="font-weight: bold;">Profile Image</i></label>
+                <input type="file" class="form-control mt-2" name="image" accept="image/*">
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-5">
+            {% if new_profile %}Create{% else %}Update{% endif %} Profile
+        </button>
+    </form>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+    {% if alert %}
+    alert("Profile Updated Successfully.")
+    document.location = "/profile"
+    {% endif %}
+</script>
+{% endblock %}

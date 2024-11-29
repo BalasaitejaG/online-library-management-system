@@ -1,0 +1,57 @@
+{% extends 'admin_navbar.html' %}
+{% block title %} Add Book {% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h2 class="text-center">Add New Book</h2>
+    
+    {% if messages %}
+    <div class="messages mb-4">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}" role="alert">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-md-6">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="isbn">ISBN</label>
+                    <input type="text" class="form-control" name="isbn" required
+                           placeholder="Enter ISBN (10 or 13 digits)">
+                    <small class="form-text text-muted">
+                        Enter the ISBN to automatically fetch book details
+                    </small>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Add Book</button>
+            </form>
+        </div>
+
+        {% if book %}
+        <div class="col-md-6">
+            <div class="card">
+                {% if book.thumbnail_url %}
+                <img src="{{ book.thumbnail_url }}" class="card-img-top" alt="{{ book.name }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ book.name }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">By {{ book.author }}</h6>
+                    <p class="card-text">
+                        <strong>ISBN:</strong> {{ book.isbn }}<br>
+                        <strong>Category:</strong> {{ book.category }}<br>
+                        <strong>Pages:</strong> {{ book.page_count }}
+                    </p>
+                    {% if book.description %}
+                    <p class="card-text">{{ book.description|truncatewords:50 }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

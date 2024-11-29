@@ -1,0 +1,115 @@
+{% extends 'admin_navbar.html' %}
+{% block title %} Search Books {% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Search Books by Category</h2>
+    
+    {% if messages %}
+    <div class="messages mb-4">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}" role="alert">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <form method="GET" class="mb-4" id="searchForm">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <div class="input-group">
+                    <select class="form-select" name="category" id="categorySelect">
+                        <option value="">Select Category</option>
+                        {% for category in categories %}
+                        <option value="{{ category }}" {% if selected_category == category %}selected{% endif %}>
+                            {{ category }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    {% if books %}
+    <div class="mb-3">
+        <h4>Found books in {{ selected_category }}</h4>
+    </div>
+    
+    <div class="row row-cols-1 row-cols-md-4 g-4" id="booksContainer">
+        {% include 'book_cards.html' %}
+    </div>
+
+    {% if has_more %}
+    <div class="text-center mt-4 mb-4">
+        <button id="loadMoreBtn" class="btn btn-outline-primary" data-page="2">
+            Load More Books
+        </button>
+    </div>
+    {% endif %}
+
+    {% elif selected_category %}
+    <div class="alert alert-info">No books found in "{{ selected_category }}" category</div>
+    {% endif %}
+</div>
+
+<div id="loading" class="text-center" style="display: none;">
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const loadMoreBtn = document.getElementById('loadMoreBtn');
+    const booksContainer = document.getElementById('booksContainer');
+    const loading = document.getElementById('loading');
+    const categorySelect = document.getElementById('categorySelect');
+
+    if (loadMoreBtn) {
+        loadMoreBtn.addEventListener('click', function() {
+            const currentPage = parseInt(loadMoreBtn.dataset.page);
+            const category = categorySelect.value;
+            
+            loading.style.display = 'block';
+            loadMoreBtn.style.display = 'none';
+
+            fetch(`?category=${category}&page=${currentPage}`, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                loading.style.display = 'none';
+                
+                // Append new books
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = data.html;
+                while (tempDiv.firstChild) {
+                    booksContainer.appendChild(tempDiv.firstChild);
+                }
+
+                // Update or hide load more button
+                if (data.has_more) {
+                    loadMoreBtn.style.display = 'block';
+                    loadMoreBtn.dataset.page = currentPage + 1;
+                } else {
+                    loadMoreBtn.style.display = 'none';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                loading.style.display = 'none';
+                loadMoreBtn.style.display = 'block';
+                alert('Error loading more books. Please try again.');
+            });
+        });
+    }
+});
+</script>
+{% endblock %} 

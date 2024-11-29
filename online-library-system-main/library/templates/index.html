@@ -1,0 +1,170 @@
+{% extends 'basic.html' %}
+{% load static %}
+{% block title %}Library Management System{% endblock %}
+{% block css %}
+<style>
+  .hero-section {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("{% static 'library.webp' %}");
+    background-size: cover;
+    background-position: center;
+    height: calc(100vh - 72px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+  }
+
+  .hero-content {
+    max-width: 800px;
+    padding: 2rem;
+  }
+
+  .hero-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    letter-spacing: -1px;
+  }
+
+  .hero-subtitle {
+    font-size: 1.25rem;
+    font-weight: 400;
+    margin-bottom: 3rem;
+    opacity: 0.9;
+    line-height: 1.8;
+  }
+
+  .cards-container {
+    display: flex;
+    gap: 2.5rem;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+
+  .login-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 2.5rem 2rem;
+    width: 300px;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .login-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  .card-icon {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    padding: 1rem;
+    transition: all 0.3s ease;
+  }
+
+  .login-card:hover .card-icon {
+    transform: scale(1.1);
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  .card-icon svg {
+    width: 40px;
+    height: 40px;
+    color: white;
+  }
+
+  .card-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: white;
+  }
+
+  .login-btn {
+    background: white;
+    color: #1a1a1a;
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 12px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    min-width: 160px;
+    text-align: center;
+  }
+
+  .login-btn:hover {
+    background: #f0f0f0;
+    transform: translateY(-2px);
+    color: #000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  @media (max-width: 768px) {
+    .hero-title {
+      font-size: 2.5rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1.1rem;
+    }
+
+    .cards-container {
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 300px;
+      padding: 2rem 1.5rem;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block body %}
+<section class="hero-section">
+  <div class="hero-content" data-aos="fade-up">
+    <h1 class="hero-title">Welcome to Digital Library</h1>
+    <p class="hero-subtitle">Discover a world of knowledge at your fingertips. Our digital library management system makes it easy to explore, borrow, and manage books.</p>
+    
+    <div class="cards-container">
+      <div class="login-card" data-aos="fade-right" data-aos-delay="200">
+        <div class="card-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
+            <path fill-rule="evenodd" d="M15.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L12.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
+          </svg>
+        </div>
+        <h2 class="card-title">Admin Portal</h2>
+        <a href="/admin_login/" class="login-btn">Login as Admin</a>
+      </div>
+      
+      <div class="login-card" data-aos="fade-left" data-aos-delay="400">
+        <div class="card-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M8.211 2.047a.5.5 0 0 0-.422 0l-7.5 3.5a.5.5 0 0 0 .025.917l7.5 3a.5.5 0 0 0 .372 0L14 7.14V13a1 1 0 0 0-1 1v2h3v-2a1 1 0 0 0-1-1V6.739l.686-.275a.5.5 0 0 0 .025-.917l-7.5-3.5M8 8.46 1.758 5.965 8 3.052l6.242 2.913z"/>
+            <path d="M4.176 9.032a.5.5 0 0 0-.656.327l-.5 1.7a.5.5 0 0 0 .294.605l4.5 1.8a.5.5 0 0 0 .372 0l4.5-1.8a.5.5 0 0 0 .294-.605l-.5-1.7a.5.5 0 0 0-.656-.327L8 10.466zm-.068 1.873.22-.748 3.496 1.311a.5.5 0 0 0 .352 0l3.496-1.311.22.748L8 12.46l-3.892-1.556Z"/>
+          </svg>
+        </div>
+        <h2 class="card-title">Student Portal</h2>
+        <a href="/student_login/" class="login-btn">Login as Student</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% for book in books %}
+<div class="col">
+    <div class="card h-100">
+        {% if book.thumbnail %}
+        <img src="{{ book.thumbnail }}" class="card-img-top" alt="{{ book.title }}"
+             style="height: 200px; object-fit: contain; padding: 1rem;">
+        {% endif %}
+        <div class="card-body">
+            <h5 class="card-title text-truncate" title="{{ book.title }}">{{ book.title }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted text-truncate" title="{{ book.authors }}">
+                By {{ book.authors|default:"Unknown" }}
+            </h6>
+            <p class="card-text">
+                <small>
+                    <strong>ISBN:</strong> {{ book.isbn }}<br>
+                    <strong>Pages:</strong> {{ book.page_count }}
+                </small>
+            </p>
+            {% if book.description %}
+            <p class="card-text small text-muted" style="height: 4.5em; overflow: hidden;">
+                {{ book.description|truncatewords:20 }}
+            </p>
+            {% endif %}
+            <form method="POST" action="{% url 'add_book_from_api' %}" class="mt-2">
+                {% csrf_token %}
+                <input type="hidden" name="title" value="{{ book.title }}">
+                <input type="hidden" name="author" value="{{ book.authors }}">
+                <input type="hidden" name="isbn" value="{{ book.isbn }}">
+                <input type="hidden" name="description" value="{{ book.description }}">
+                <input type="hidden" name="category" value="{{ book.categories }}">
+                <input type="hidden" name="page_count" value="{{ book.page_count }}">
+                <input type="hidden" name="thumbnail" value="{{ book.thumbnail }}">
+                <button type="submit" class="btn btn-success btn-sm w-100">Add to Library</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endfor %} 

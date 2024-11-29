@@ -1,0 +1,57 @@
+{% extends 'student_navbar.html' %}
+{% load static %}
+{% block title %} Library Management System {% endblock %}
+{% block css %}
+{% endblock %}
+{% block body %}
+<div class="container mt-4">
+    <h1 class="text-center"><u>My Book Requests</u></h1>
+
+    {% if error %}
+    <div class="alert alert-warning" role="alert">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}" role="alert">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if requests %}
+    <table class="table table-hover" id="example">
+        <thead>
+            <tr>
+                <th>Sr.No</th>
+                <th>Book Name</th>
+                <th>Request Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for request in requests %}
+            <tr>
+                <td>{{forloop.counter}}.</td>
+                <td>{{request.book.name}}</td>
+                <td>{{request.request_date|date:"F d, Y"}}</td>
+                <td>
+                    <span class="badge {% if request.status == 'approved' %}bg-success{% elif request.status == 'rejected' %}bg-danger{% else %}bg-warning{% endif %}">
+                        {{request.status|title}}
+                    </span>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="text-center mt-4">
+        <p>You haven't made any book requests yet.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
