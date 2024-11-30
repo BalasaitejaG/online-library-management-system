@@ -16,6 +16,11 @@ from django.http import JsonResponse
 
 
 def index(request):
+    if request.user.is_authenticated:
+        if request.user.is_staff:
+            return redirect('view_books')  # Redirect admin to admin dashboard
+        else:
+            return redirect('student_view_books')  # Redirect student to student dashboard
     return render(request, "index.html")
 
 @login_required(login_url = '/admin_login')

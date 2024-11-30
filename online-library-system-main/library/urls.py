@@ -28,4 +28,6 @@ urlpatterns = [
     path('manage_book_requests/', views.manage_book_requests, name='manage_book_requests'),
     path("search_books/", views.search_books, name="search_books"),
     path("add_book_from_api/", views.add_book_from_api, name="add_book_from_api"),
+    path('student/login/', views.student_login, name='student_login'),
+    path('student/register/', views.student_registration, name='student_registration'),
 ]

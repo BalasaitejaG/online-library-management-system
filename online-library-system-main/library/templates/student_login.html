@@ -1,84 +1,323 @@
 {% extends 'basic.html' %}
-{% load static %} 
-{% block title %} 
-Online-libo
-{% endblock %} 
-{% block css %} 
+{% load static %}
+{% block title %}Online-libo - Student Portal{% endblock %}
+
+{% block css %}
 <style>
-.back-link {
+.login-page {
+    min-height: calc(100vh - 72px);
+    display: flex;
+    background: linear-gradient(135deg, #1a365d 0%, #2d3748 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.login-page::before {
+    content: '';
     position: absolute;
-    top: 20px;
-    left: 20px;
-    z-index: 1000;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') center/cover;
+    opacity: 0.1;
+}
+
+.login-left {
+    flex: 1;
     display: flex;
     align-items: center;
-    gap: 5px;
-    color: white;
-    text-decoration: none;
-    font-size: 16px;
-    padding: 8px 15px;
-    border-radius: 5px;
-    transition: all 0.3s ease;
-    background-color: rgba(255, 255, 255, 0.1);
+    justify-content: center;
+    padding: 40px;
+    position: relative;
 }
-.back-link:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    color: white;
+
+.login-right {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    position: relative;
 }
-.page-title {
-    position: absolute;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
+
+.login-content {
+    width: 100%;
+    max-width: 400px;
+    position: relative;
+}
+
+.welcome-text {
     color: white;
-    font-size: 24px;
+    margin-bottom: 40px;
+}
+
+.welcome-text h1 {
+    font-size: 3em;
+    margin-bottom: 20px;
+    font-weight: 700;
+    background: linear-gradient(to right, #fff, #cbd5e0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.welcome-text p {
+    font-size: 1.1em;
+    line-height: 1.6;
+    color: #e2e8f0;
+}
+
+.login-form {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    color: #e2e8f0;
+    margin-bottom: 8px;
+    font-size: 0.9em;
     font-weight: 500;
-    z-index: 1000;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: white;
+    font-size: 1em;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.3);
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 14px;
+    background: #4f46e5;
+    border: none;
+    border-radius: 50px;
+    color: white;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.submit-btn:hover {
+    background: #4338ca;
+    transform: translateY(-2px);
+}
+
+.submit-btn i {
+    font-size: 1.1em;
+}
+
+@media (max-width: 768px) {
+    .login-page {
+        flex-direction: column;
+    }
+    
+    .login-left, .login-right {
+        padding: 20px;
+    }
+    
+    .welcome-text h1 {
+        font-size: 2em;
+    }
+    
+    .login-form {
+        padding: 20px;
+    }
+}
+
+.login-form-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.forms-wrapper {
+    display: flex;
+    width: 200%;
+    transition: transform 0.6s ease-in-out;
+}
+
+.forms-wrapper.show-signup {
+    transform: translateX(-50%);
+}
+
+.login-form, .signup-form {
+    width: 100%;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.toggle-form {
     text-align: center;
-    font-family: 'Inter', sans-serif;
+    margin-top: 20px;
+}
+
+.toggle-btn {
+    background: none;
+    border: none;
+    color: #e2e8f0;
+    font-size: 0.9em;
+    cursor: pointer;
+    text-decoration: underline;
+    transition: color 0.3s ease;
+}
+
+.toggle-btn:hover {
+    color: white;
+}
+
+.form-title {
+    color: white;
+    font-size: 1.5em;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-weight: 600;
+}
+
+/* Add styles for the new registration fields */
+.name-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.error-message {
+    color: #ef4444;
+    font-size: 0.875em;
+    margin-top: 0.25rem;
+}
+
+/* Adjust mobile styles */
+@media (max-width: 768px) {
+    .name-fields {
+        grid-template-columns: 1fr;
+    }
 }
 </style>
-{% endblock %} 
-{% block body %} 
+{% endblock %}
 
-<a href="/" class="back-link">
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
-    </svg>
-    Back
-</a>
+{% block body %}
+<div class="login-page">
+    <div class="login-left">
+        <div class="login-content">
+            <div class="welcome-text" data-aos="fade-right">
+                <h1>Welcome to Online-libo</h1>
+                <p>Join our digital library community to explore a world of knowledge at your fingertips.</p>
+            </div>
+        </div>
+    </div>
+    <div class="login-right">
+        <div class="login-content">
+            <div class="login-form-container" data-aos="fade-left">
+                <div class="forms-wrapper">
+                    <!-- Sign In Form -->
+                    <form class="login-form" method="post" action="{% url 'student_login' %}">
+                        {% csrf_token %}
+                        <h2 class="form-title">Sign In</h2>
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" name="username" id="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" name="password" id="password" required>
+                        </div>
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Sign In
+                        </button>
+                        <div class="toggle-form">
+                            <button type="button" class="toggle-btn" onclick="toggleForm()">
+                                New student? Create an account
+                            </button>
+                        </div>
+                    </form>
 
-<div class="page-title">Online-libo</div>
-
-<head>
-  <link rel="stylesheet" href="{%static 'student_login.css'%}" />
-</head>
-<form method="POST" class="login-form">
-  {% csrf_token %}
-  <div class="all">
-  <p class="login-text">
-    <span class="fa-stack fa-lg">
-      <i class="fa fa-circle fa-stack-2x"></i>
-      <i class="fa fa-lock fa-stack-1x"></i>
-    </span>
-  </p>
-  <input
-    type="text"
-    class="login-username"
-    name="username"
-    placeholder="Enter Username"
-    required
-  />
-  <input
-    type="password"
-    class="login-password"
-    name="password"
-    placeholder="Enter Password"
-    required
-  />
-  <button type="submit" class="login-submit">Login</button>
-</form>
-<div class="underlay-photo"></div>
-<div class="underlay-black"></div>
+                    <!-- Sign Up Form -->
+                    <form class="signup-form" method="post" action="{% url 'student_registration' %}">
+                        {% csrf_token %}
+                        <h2 class="form-title">Create Account</h2>
+                        <div class="name-fields">
+                            <div class="form-group">
+                                <label for="first_name">First Name</label>
+                                <input type="text" name="first_name" id="first_name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="last_name">Last Name</label>
+                                <input type="text" name="last_name" id="last_name" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" name="email" id="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="signup_username">Username</label>
+                            <input type="text" name="username" id="signup_username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="signup_password">Password</label>
+                            <input type="password" name="password" id="signup_password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirm_password">Confirm Password</label>
+                            <input type="password" name="confirm_password" id="confirm_password" required>
+                        </div>
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-user-plus"></i>
+                            Create Account
+                        </button>
+                        <div class="toggle-form">
+                            <button type="button" class="toggle-btn" onclick="toggleForm()">
+                                Already have an account? Sign in
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+{% endblock %}
+
+{% block js %}
+<script>
+function toggleForm() {
+    const formsWrapper = document.querySelector('.forms-wrapper');
+    formsWrapper.classList.toggle('show-signup');
+}
+
+// Show error messages if any
+{% if messages %}
+    {% for message in messages %}
+        alert("{{ message }}");
+    {% endfor %}
+{% endif %}
+</script>
 {% endblock %}

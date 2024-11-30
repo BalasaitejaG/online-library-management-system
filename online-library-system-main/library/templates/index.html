@@ -1,170 +1,295 @@
 {% extends 'basic.html' %}
 {% load static %}
-{% block title %}Library Management System{% endblock %}
+{% block title %}Online-libo - Library Management System{% endblock %}
+
 {% block css %}
 <style>
-  .hero-section {
-    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("{% static 'library.webp' %}");
-    background-size: cover;
-    background-position: center;
-    height: calc(100vh - 72px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+/* Hero Section */
+.hero {
+    background: linear-gradient(135deg, #1a365d 0%, #2d3748 100%);
     color: white;
-  }
+    padding: 120px 0;
+    position: relative;
+    overflow: hidden;
+}
 
-  .hero-content {
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') center/cover;
+    opacity: 0.1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
     max-width: 800px;
-    padding: 2rem;
-  }
+    margin: 0 auto;
+    text-align: center;
+    padding: 0 20px;
+}
 
-  .hero-title {
-    font-size: 3.5rem;
-    font-weight: 700;
+.hero h1 {
+    font-size: 4rem;
+    font-weight: 800;
     margin-bottom: 1.5rem;
-    letter-spacing: -1px;
-  }
+    line-height: 1.2;
+    background: linear-gradient(to right, #fff, #cbd5e0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
 
-  .hero-subtitle {
+.hero p {
     font-size: 1.25rem;
-    font-weight: 400;
-    margin-bottom: 3rem;
-    opacity: 0.9;
+    margin-bottom: 2rem;
+    color: #e2e8f0;
     line-height: 1.8;
-  }
+}
 
-  .cards-container {
+.cta-buttons {
     display: flex;
-    gap: 2.5rem;
+    gap: 1rem;
     justify-content: center;
     margin-top: 2rem;
-  }
+}
 
-  .login-card {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
-    padding: 2.5rem 2rem;
-    width: 300px;
+.cta-button {
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-weight: 600;
+    text-decoration: none;
     transition: all 0.3s ease;
-    display: flex;
-    flex-direction: column;
+    display: inline-flex;
     align-items: center;
-  }
+    gap: 0.5rem;
+}
 
-  .login-card:hover {
+.primary-button {
+    background: #4f46e5;
+    color: white;
+    box-shadow: 0 4px 6px rgba(79, 70, 229, 0.25);
+}
+
+.primary-button:hover {
+    background: #4338ca;
+    transform: translateY(-2px);
+    color: white;
+}
+
+.secondary-button {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    backdrop-filter: blur(10px);
+}
+
+.secondary-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+    color: white;
+}
+
+/* Features Section */
+.features-section {
+    padding: 100px 0;
+    background: #f8fafc;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.section-title h2 {
+    font-size: 2.5rem;
+    color: #1e293b;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.section-title p {
+    color: #64748b;
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 0 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.feature-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.feature-card:hover {
     transform: translateY(-5px);
-    background: rgba(255, 255, 255, 0.15);
-  }
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
 
-  .card-icon {
-    width: 80px;
-    height: 80px;
-    margin-bottom: 1.5rem;
+.feature-icon {
+    width: 60px;
+    height: 60px;
+    background: #4f46e5;
+    border-radius: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-    padding: 1rem;
-    transition: all 0.3s ease;
-  }
+    margin: 0 auto 1.5rem;
+}
 
-  .login-card:hover .card-icon {
-    transform: scale(1.1);
-    background: rgba(255, 255, 255, 0.3);
-  }
-
-  .card-icon svg {
-    width: 40px;
-    height: 40px;
-    color: white;
-  }
-
-  .card-title {
+.feature-icon i {
     font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 1.5rem;
     color: white;
-  }
+}
 
-  .login-btn {
+.feature-card h3 {
+    font-size: 1.5rem;
+    color: #1e293b;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.feature-card p {
+    color: #64748b;
+    line-height: 1.6;
+}
+
+/* Stats Section */
+.stats-section {
+    padding: 80px 0;
     background: white;
-    color: #1a1a1a;
-    border: none;
-    padding: 0.8rem 2rem;
-    border-radius: 12px;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    display: inline-block;
-    min-width: 160px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.stat-card {
     text-align: center;
-  }
+}
 
-  .login-btn:hover {
-    background: #f0f0f0;
-    transform: translateY(-2px);
-    color: #000;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
+.stat-number {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #4f46e5;
+    margin-bottom: 0.5rem;
+}
 
-  @media (max-width: 768px) {
-    .hero-title {
-      font-size: 2.5rem;
+.stat-label {
+    color: #64748b;
+    font-size: 1.1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2.5rem;
     }
-
-    .hero-subtitle {
-      font-size: 1.1rem;
+    
+    .hero p {
+        font-size: 1.1rem;
     }
-
-    .cards-container {
-      flex-direction: column;
-      align-items: center;
-      gap: 1.5rem;
+    
+    .cta-buttons {
+        flex-direction: column;
     }
-
-    .login-card {
-      width: 100%;
-      max-width: 300px;
-      padding: 2rem 1.5rem;
+    
+    .cta-button {
+        width: 100%;
+        justify-content: center;
     }
-  }
+    
+    .section-title h2 {
+        font-size: 2rem;
+    }
+}
 </style>
 {% endblock %}
 
 {% block body %}
-<section class="hero-section">
-  <div class="hero-content" data-aos="fade-up">
-    <h1 class="hero-title">Welcome to Digital Library</h1>
-    <p class="hero-subtitle">Discover a world of knowledge at your fingertips. Our digital library management system makes it easy to explore, borrow, and manage books.</p>
-    
-    <div class="cards-container">
-      <div class="login-card" data-aos="fade-right" data-aos-delay="200">
-        <div class="card-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16">
-            <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
-            <path fill-rule="evenodd" d="M15.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L12.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
-          </svg>
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>Welcome to Online-libo</h1>
+        <p>Your modern digital library management system. Discover, borrow, and manage books with ease. Experience the future of library services.</p>
+        <div class="cta-buttons">
+            <a href="/student_login" class="cta-button primary-button">
+                <i class="fas fa-user"></i>
+                Student Login
+            </a>
+            <a href="/admin_login" class="cta-button secondary-button">
+                <i class="fas fa-lock"></i>
+                Admin Portal
+            </a>
         </div>
-        <h2 class="card-title">Admin Portal</h2>
-        <a href="/admin_login/" class="login-btn">Login as Admin</a>
-      </div>
-      
-      <div class="login-card" data-aos="fade-left" data-aos-delay="400">
-        <div class="card-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16">
-            <path d="M8.211 2.047a.5.5 0 0 0-.422 0l-7.5 3.5a.5.5 0 0 0 .025.917l7.5 3a.5.5 0 0 0 .372 0L14 7.14V13a1 1 0 0 0-1 1v2h3v-2a1 1 0 0 0-1-1V6.739l.686-.275a.5.5 0 0 0 .025-.917l-7.5-3.5M8 8.46 1.758 5.965 8 3.052l6.242 2.913z"/>
-            <path d="M4.176 9.032a.5.5 0 0 0-.656.327l-.5 1.7a.5.5 0 0 0 .294.605l4.5 1.8a.5.5 0 0 0 .372 0l4.5-1.8a.5.5 0 0 0 .294-.605l-.5-1.7a.5.5 0 0 0-.656-.327L8 10.466zm-.068 1.873.22-.748 3.496 1.311a.5.5 0 0 0 .352 0l3.496-1.311.22.748L8 12.46l-3.892-1.556Z"/>
-          </svg>
-        </div>
-        <h2 class="card-title">Student Portal</h2>
-        <a href="/student_login/" class="login-btn">Login as Student</a>
-      </div>
     </div>
-  </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section">
+    <div class="section-title">
+        <h2>Why Choose Online-libo?</h2>
+        <p>Experience a modern library management system designed for efficiency and ease of use</p>
+    </div>
+    <div class="features-grid">
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+            <div class="feature-icon">
+                <i class="fas fa-search"></i>
+            </div>
+            <h3>Smart Search</h3>
+            <p>Find any book instantly with our intelligent search system. Filter by title, author, or category.</p>
+        </div>
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+            <div class="feature-icon">
+                <i class="fas fa-bolt"></i>
+            </div>
+            <h3>Quick Access</h3>
+            <p>Borrow books with just a few clicks. Manage your loans and returns efficiently.</p>
+        </div>
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+            <div class="feature-icon">
+                <i class="fas fa-bell"></i>
+            </div>
+            <h3>Smart Notifications</h3>
+            <p>Get timely reminders about due dates and available books you're interested in.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section">
+    <div class="stats-grid">
+        <div class="stat-card" data-aos="fade-up" data-aos-delay="100">
+            <div class="stat-number">10,000+</div>
+            <div class="stat-label">Books Available</div>
+        </div>
+        <div class="stat-card" data-aos="fade-up" data-aos-delay="200">
+            <div class="stat-number">5,000+</div>
+            <div class="stat-label">Active Users</div>
+        </div>
+        <div class="stat-card" data-aos="fade-up" data-aos-delay="300">
+            <div class="stat-number">24/7</div>
+            <div class="stat-label">Digital Access</div>
+        </div>
+    </div>
 </section>
 {% endblock %}
